@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Calculator } from 'components/Calculator';
 
 describe("<Calculator/>", () => {
@@ -28,6 +28,23 @@ describe("<Calculator/>", () => {
         expect(getOperator()).toBe("x");
         expect(getResult()).toBe("120");
     });
+    it("calculates correctly when the user updates an input", () => {
+        render(<Calculator defaultA={12} defaultB={10} defaultOperator={"x"} />);
+        const { getValueA, getValueB, getOperator, getResult } = getCalculator();
+        fireEvent.change(screen.getByTestId("inputA"), { target: { value: 3 } });
+        expect(getValueA()).toBe("3");
+        fireEvent.change(screen.getByTestId("inputB"), { target: { value: 3 } });
+        expect(getValueB()).toBe("3");
+        fireEvent.change(screen.getByTestId("operator"), { 
+            target: { value: "-" } });
+        expect(getOperator()).toBe("-");
+        expect(getResult()).toBe("0");
+    });
+    it("displays an error when we divide by 0", () => {
+        render(<Calculator defaultA={0} defaultB={0} defaultOperator={"/"} />);
+        const { getResult } = getCalculator();
+        expect(getResult()).toBe("Tu ne peux pas diviser par 0 !");
+    })
 });
 
 const getCalculator = () => {
