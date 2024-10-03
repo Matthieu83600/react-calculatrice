@@ -59,7 +59,11 @@ export function Calculator({ defaultA, defaultB, defaultOperator}) {
     const renderSelectBox = () => {
         return (
             <div>
-                <select value={operator} onChange={(e) => setOperator(e.target.value)}>
+                <select
+                    className="form-select" 
+                    value={operator}
+                    onChange={(e) => setOperator(e.target.value)}
+                >
                     {OPERATORS.map((op, index) => (
                         <option key={index} value={op}>{op}</option>
                     ))}
